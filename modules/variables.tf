@@ -22,8 +22,4 @@ variable "key_name" {
   default     = "ansiblekey"
 }
 
-data "aws_ami" "ubuntu" {
-  most_recent = true
-  owners      = ["099720109477"]
-
  
