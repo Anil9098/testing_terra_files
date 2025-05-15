@@ -53,9 +53,15 @@ variable "testing4" {
   type        = string
 }
 
+variable "testing4" {
+  description = "testing"
+  type        = string
+}
 
-
-
+variable "testing4" {
+  description = "testing"
+  type        = string
+}
 
 
 
