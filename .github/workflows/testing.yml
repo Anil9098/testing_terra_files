@@ -3,7 +3,7 @@ name: Update READMEs with terraform-docs on Merge
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - modules/**/*.tf
       - templates/**/*.tf
