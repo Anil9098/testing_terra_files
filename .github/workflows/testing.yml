@@ -52,7 +52,7 @@ jobs:
         uses: terraform-docs/gh-actions@v1.4.1
         with:
           working-dir: ./modules
-          output-file: /README.md  # Specify the existing README.md file in modules
+          output-file: README.md  # Specify the existing README.md file in modules
           output-method: inject  # Only inject the documentation, don't create new files
           git-push: "false"  # Don't push automatically, we'll handle it manually
 
@@ -61,7 +61,7 @@ jobs:
         uses: terraform-docs/gh-actions@v1.4.1
         with:
           working-dir: ./templates
-          output-file: /README.md  # Specify the existing README.md file in templates
+          output-file: README.md  # Specify the existing README.md file in templates
           output-method: inject  # Only inject the documentation, don't create new files
           git-push: "false"  # Don't push automatically, we'll handle it manually
 
