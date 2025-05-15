@@ -32,3 +32,9 @@ variable "testing21" {
   description = "test variable"
 }
  
+
+variable "testing1" {
+  type        = string
+  description = "test variable"
+}
+
