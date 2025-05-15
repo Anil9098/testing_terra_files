@@ -38,7 +38,7 @@ data "aws_ami" "ubuntu" {
 
 }
 
-variable "testing5" {
+variable "testing6" {
   description = "testing"
   type        = string
 }
