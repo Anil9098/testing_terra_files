@@ -65,6 +65,11 @@ jobs:
           output-method: inject  # Only inject the documentation, don't create new files
           git-push: "false"  # Don't push automatically, we'll handle it manually
 
+      - name: Fix Git permissions
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
+        run: |
+          sudo chown -R "$(whoami)":"$(whoami)" .git/
+
       - name: Commit and push the updated README.md files
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
