@@ -78,8 +78,8 @@ jobs:
       - name: Commit and push all updated README.md files
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
-          git config user.name "testing"
-          git config user.email "testing@users.noreply.github.com"
+          git config user.name "Hardy"
+          git config user.email "Hardy@users.noreply.github.com"
           git add modules/README.md templates/README.md
           git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update all README.md with terraform-docs" || echo "No changes to commit"
           BRANCH="${GITHUB_REF#refs/heads/}"
