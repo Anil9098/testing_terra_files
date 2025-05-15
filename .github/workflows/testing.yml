@@ -56,16 +56,16 @@ jobs:
 
       - name: Run terraform-docs in each directory
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
-        shell: bash
         run: |
           while read dir; do
             if [ -f "$dir/README.md" ]; then
-              echo "Updating $dir/README.md"
-              terraform-docs markdown table "$dir" --output-file README.md --output-method inject
+               echo "Updating $dir/README.md"
+               terraform-docs markdown table "$dir" > "$dir/README.md"
             else
-              echo "Skipping $dir — no README.md found"
+               echo "Skipping $dir — no README.md found"
             fi
           done < changed_dirs.txt
+
 
       - name: Fix Git permissions
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
