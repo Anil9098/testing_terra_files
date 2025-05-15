@@ -27,7 +27,7 @@ data "aws_ami" "ubuntu" {
   owners      = ["099720109477"]
 }
 
-variable "testing10" {
+variable "testing11" {
   type        = string
   description = "test variable"
 }
