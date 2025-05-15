@@ -44,14 +44,15 @@ jobs:
             echo "no_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Install terraform-docs
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
+        run: |
+          wget https://github.com/terraform-docs/terraform-docs/releases/latest/download/terraform-docs-linux-amd64.tar.gz
+          tar -xzf terraform-docs-linux-amd64.tar.gz
+          sudo mv terraform-docs /usr/local/bin/
+
       - name: Run terraform-docs in each directory
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
-        uses: terraform-docs/gh-actions@v1.4.1
-        with:
-          working-dir: .
-          config-file: .terraform-docs.yml
-        env:
-          INPUT_CHANGED_DIRS_FILE: changed_dirs.txt
         shell: bash
         run: |
           while read dir; do
@@ -64,6 +65,7 @@ jobs:
           done < changed_dirs.txt
 
       - name: Fix Git permissions
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
           sudo chown -R "$(whoami)":"$(whoami)" .git/
 
