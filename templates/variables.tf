@@ -36,6 +36,8 @@ data "aws_ami" "ubuntu" {
     values = ["ebs"]
   }
 
+}
+
 variable "testing" {
   description = "testing"
   type        = string
