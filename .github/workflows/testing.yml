@@ -7,7 +7,7 @@ on:
     paths:
       - modules/**/*.tf
       - templates/**/*.tf
-      
+
 permissions:
   contents: write
 
@@ -47,40 +47,25 @@ jobs:
             echo "no_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Install terraform-docs
+      - name: Use terraform-docs to inject docs (like gh-action does)
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
-        run: |
-          wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.19.0/terraform-docs-v0.19.0-linux-amd64.tar.gz
-          tar -xzf terraform-docs-v0.19.0-linux-amd64.tar.gz
-          sudo mv terraform-docs /usr/local/bin/
-          
-      - name: Check terraform-docs version
-        run: terraform-docs --version
-
-      - name: Run terraform-docs in each directory
-        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
-        run: |
-          while read dir; do
-            if [ -f "$dir/README.md" ]; then
-               echo "Updating $dir/README.md"
-               terraform-docs markdown table "$dir" > "$dir/README.md"
-            else
-               echo "Skipping $dir — no README.md found"
-            fi
-          done < changed_dirs.txt
-
-
-      - name: Fix Git permissions
-        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
-        run: |
-          sudo chown -R "$(whoami)":"$(whoami)" .git/
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: .
+          output-file: README.md
+          output-method: inject
+          git-push: "false"  # Don't push automatically, we'll handle it manually
 
       - name: Commit and push all updated README.md files
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
-          git config user.name "Hardy"
-          git config user.email "Hardy@users.noreply.github.com"
-          git add modules/README.md templates/README.md
+          git config user.name "hardy"
+          git config user.email "hardy@users.noreply.github.com"
+          
+          # Add only changed README.md files (modules/README.md only, no templates/README.md)
+          git add modules/README.md
+
+          # Commit and push if there are changes
           git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update all README.md with terraform-docs" || echo "No changes to commit"
           BRANCH="${GITHUB_REF#refs/heads/}"
           git pull origin "$BRANCH"
