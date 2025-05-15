@@ -50,8 +50,6 @@ variable "testing4" {
 
 
 variable "testing5" {
-  description = "testing"
   type        = string
+  description = "test variable"
 }
-
-
