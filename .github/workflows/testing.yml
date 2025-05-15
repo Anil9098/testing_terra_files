@@ -47,9 +47,12 @@ jobs:
       - name: Install terraform-docs
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
-          wget https://github.com/terraform-docs/terraform-docs/releases/latest/download/terraform-docs-linux-amd64.tar.gz
-          tar -xzf terraform-docs-linux-amd64.tar.gz
+          wget https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-linux-amd64.tar.gz
+          tar -xzf terraform-docs-v0.16.0-linux-amd64.tar.gz
           sudo mv terraform-docs /usr/local/bin/
+          
+      - name: Check terraform-docs version
+        run: terraform-docs --version
 
       - name: Run terraform-docs in each directory
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
