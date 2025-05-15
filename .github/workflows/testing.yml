@@ -1,0 +1,79 @@
+name: Update READMEs with terraform-docs on Merge
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - modules/**/*.tf
+      - templates/**/*.tf
+
+jobs:
+  update-readmes:
+    name: Update README.md files with terraform-docs (single commit)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Extract ticket ID from last commit
+        id: ticket
+        shell: bash
+        run: |
+          TICKET=$(git log -1 --pretty=%B | grep -oE 'NCP-[0-9]+' || echo "NCP-XXXX")
+          echo "ticket=$TICKET" >> "$GITHUB_OUTPUT"
+
+      - name: Get changed Terraform directories
+        id: get_dirs
+        shell: bash
+        run: |
+          BEFORE_COMMIT="${{ github.event.before || 'HEAD~1' }}"
+          CHANGED=$(git diff --name-only "$BEFORE_COMMIT" "${{ github.sha }}" \
+            | grep -E '^(modules|templates)/.*\.tf$' \
+            | xargs -n1 dirname \
+            | sort -u)
+          echo "Changed directories:"
+          echo "$CHANGED"
+          if [ -z "$CHANGED" ]; then
+            echo "no_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "$CHANGED" > changed_dirs.txt
+            echo "no_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Run terraform-docs in each directory
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: .
+          config-file: .terraform-docs.yml
+        env:
+          INPUT_CHANGED_DIRS_FILE: changed_dirs.txt
+        shell: bash
+        run: |
+          while read dir; do
+            if [ -f "$dir/README.md" ]; then
+              echo "Updating $dir/README.md"
+              terraform-docs markdown table "$dir" --output-file README.md --output-method inject
+            else
+              echo "Skipping $dir — no README.md found"
+            fi
+          done < changed_dirs.txt
+
+      - name: Fix Git permissions
+        run: |
+          sudo chown -R "$(whoami)":"$(whoami)" .git/
+
+      - name: Commit and push all updated README.md files
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
+        run: |
+          git config user.name "testing"
+          git config user.email "testing@users.noreply.github.com"
+          git add modules/**/README.md templates/**/README.md
+          git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update all README.md with terraform-docs" || echo "No changes to commit"
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          git pull --rebase origin "$BRANCH"
+          git push origin "$BRANCH"
