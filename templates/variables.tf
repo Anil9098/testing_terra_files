@@ -38,30 +38,16 @@ data "aws_ami" "ubuntu" {
 
 }
 
-variable "testing7" {
+variable "testing8" {
   description = "testing"
   type        = string
 }
  
-variable "testing3" {
-  description = "testing"
-  type        = string
-}
-
 variable "testing4" {
   description = "testing"
   type        = string
 }
 
-variable "testing4" {
-  description = "testing"
-  type        = string
-}
-
-variable "testing4" {
-  description = "testing"
-  type        = string
-}
 
 
 
