@@ -51,17 +51,8 @@ jobs:
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         uses: terraform-docs/gh-actions@v1.4.1
         with:
-          working-dir: ./modules
+          working-dir: ./modules,templates
           output-file: README.md  # Specify the existing README.md file in modules
-          output-method: inject  # Only inject the documentation, don't create new files
-          git-push: "false"  # Don't push automatically, we'll handle it manually
-
-      - name: Use terraform-docs to inject docs into existing README.md for templates
-        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
-        uses: terraform-docs/gh-actions@v1.4.1
-        with:
-          working-dir: ./templates
-          output-file: README.md  # Specify the existing README.md file in templates
           output-method: inject  # Only inject the documentation, don't create new files
           git-push: "false"  # Don't push automatically, we'll handle it manually
 
