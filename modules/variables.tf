@@ -26,7 +26,7 @@ data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"]
 
-variable "testing3" {
+variable "testing4" {
   type        = string
   description = "test variable"
 }
