@@ -68,8 +68,8 @@ jobs:
       - name: Commit and push the updated README.md files
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
-          git config user.name "hardy"
-          git config user.email "hardy@users.noreply.github.com"
+          git config user.name "tester"
+          git config user.email "tester@users.noreply.github.com"
           
           # Add both README.md files (modules/README.md and templates/README.md)
           git add modules/README.md templates/README.md
