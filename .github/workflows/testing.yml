@@ -80,5 +80,5 @@ jobs:
           git add modules/README.md templates/README.md
           git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update all README.md with terraform-docs" || echo "No changes to commit"
           BRANCH="${GITHUB_REF#refs/heads/}"
-          git pull --rebase origin "$BRANCH"
+          git pull origin "$BRANCH"
           git push origin "$BRANCH"
