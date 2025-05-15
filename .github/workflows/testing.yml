@@ -1,4 +1,4 @@
-name: Update READMEs with terraform-docs on Merge
+name: Update README.md files with terraform-docs on Merge
 
 on:
   push:
@@ -47,26 +47,35 @@ jobs:
             echo "no_changes=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Use terraform-docs to inject docs (like gh-action does)
+      - name: Use terraform-docs to inject docs into existing README.md for modules
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         uses: terraform-docs/gh-actions@v1.4.1
         with:
-          working-dir: .
-          output-file: README.md
-          output-method: inject
+          working-dir: ./modules
+          output-file: ./modules/README.md  # Specify the existing README.md file in modules
+          output-method: inject  # Only inject the documentation, don't create new files
           git-push: "false"  # Don't push automatically, we'll handle it manually
 
-      - name: Commit and push all updated README.md files
+      - name: Use terraform-docs to inject docs into existing README.md for templates
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: ./templates
+          output-file: ./templates/README.md  # Specify the existing README.md file in templates
+          output-method: inject  # Only inject the documentation, don't create new files
+          git-push: "false"  # Don't push automatically, we'll handle it manually
+
+      - name: Commit and push the updated README.md files
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
           git config user.name "hardy"
           git config user.email "hardy@users.noreply.github.com"
           
-          # Add only changed README.md files (modules/README.md only, no templates/README.md)
-          git add modules/README.md
+          # Add both README.md files (modules/README.md and templates/README.md)
+          git add modules/README.md templates/README.md
 
-          # Commit and push if there are changes
-          git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update all README.md with terraform-docs" || echo "No changes to commit"
+          # Commit and push the changes
+          git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update README.md with terraform-docs" || echo "No changes to commit"
           BRANCH="${GITHUB_REF#refs/heads/}"
           git pull origin "$BRANCH"
           git push origin "$BRANCH"
