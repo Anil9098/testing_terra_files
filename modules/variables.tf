@@ -33,7 +33,7 @@ variable "testing21" {
 }
  
 
-variable "testing2" {
+variable "testing3" {
   type        = string
   description = "test variable"
 }

@@ -43,7 +43,7 @@ variable "testing7" {
   type        = string
 }
  
-variable "testing2" {
+variable "testing3" {
   description = "testing"
   type        = string
 }
