@@ -51,7 +51,7 @@ jobs:
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         uses: terraform-docs/gh-actions@v1.4.1
         with:
-          working-dir: .
+          working-dir: modules,templates
           recursive: true
           output-method: inject  # Only inject the documentation, don't create new files
           git-push: false
