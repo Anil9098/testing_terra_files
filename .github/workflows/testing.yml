@@ -28,6 +28,7 @@ jobs:
         run: |
           TICKET=$(git log -1 --pretty=%B | grep -oE 'NCP-[0-9]+' || echo "NCP-XXXX")
           echo "ticket=$TICKET" >> "$GITHUB_OUTPUT"
+
       - name: Get changed Terraform directories
         id: get_dirs
         shell: bash
@@ -45,20 +46,21 @@ jobs:
             echo "$CHANGED" > changed_dirs.txt
             echo "no_changes=false" >> "$GITHUB_OUTPUT"
           fi
-      - name: Use terraform-docs to inject docs into existing README.md for modules
+
+      - name: Use terraform-docs to inject docs into existing README.md files for modules and templates
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         uses: terraform-docs/gh-actions@v1.4.1
         with:
           working-dir: .
           recursive: true
-          output-file: README.md  # Specify the existing README.md file in modules
           output-method: inject  # Only inject the documentation, don't create new files
-          git-push: "false"  # Don't push automatically, we'll handle it manually
+          git-push: false
 
       - name: Fix Git permissions
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
           sudo chown -R "$(whoami)":"$(whoami)" .git/
+
       - name: Commit and push the updated README.md files
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         run: |
@@ -67,7 +69,6 @@ jobs:
           
           # Add both README.md files (modules/README.md and templates/README.md)
           git add modules/**/README.md templates/**/README.md
-          # Commit and push the changes
           git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update README.md with terraform-docs" || echo "No changes to commit"
           BRANCH="${GITHUB_REF#refs/heads/}"
           git pull origin "$BRANCH"
