@@ -63,7 +63,7 @@ No modules.
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key pair for ec2 access | `string` | `"ansiblekey"` | no |
 | <a name="input_subnet_cidr"></a> [subnet\_cidr](#input\_subnet\_cidr) | CIDR block for the subnet | `string` | `"10.0.1.0/24"` | no |
 | <a name="input_testing27"></a> [testing27](#input\_testing27) | test variable | `string` | n/a | yes |
-| <a name="input_testing555"></a> [testing555](#input\_testing555) | test variable | `string` | n/a | yes |
+| <a name="input_testing999"></a> [testing999](#input\_testing999) | test variable | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for the VPC | `string` | `"10.0.0.0/16"` | no |
 
 ## Outputs
