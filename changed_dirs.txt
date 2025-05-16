@@ -1,2 +1,3 @@
 modules/bastion
 templates/demo
+templates/test
