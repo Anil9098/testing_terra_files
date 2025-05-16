@@ -69,7 +69,7 @@ jobs:
           git config user.email "tester@users.noreply.github.com"
           
           # Add both README.md files (modules/README.md and templates/README.md)
-          git add modules/README.md templates/README.md
+          git add modules/**/README.md templates/**/README.md
 
           # Commit and push the changes
           git commit -m "${{ steps.ticket.outputs.ticket }}: Auto-update README.md with terraform-docs" || echo "No changes to commit"
