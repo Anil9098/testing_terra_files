@@ -51,8 +51,19 @@ jobs:
         if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
         uses: terraform-docs/gh-actions@v1.4.1
         with:
-          working-dir: modules,templates
+          working-dir: .
           recursive: true
+          recursive-path: modules
+          output-method: inject  # Only inject the documentation, don't create new files
+          git-push: false
+
+      - name: Use terraform-docs to inject docs into existing README.md files for modules and templates
+        if: ${{ steps.get_dirs.outputs.no_changes == 'false' }}
+        uses: terraform-docs/gh-actions@v1.4.1
+        with:
+          working-dir: .
+          recursive: true
+          recursive-path: templates
           output-method: inject  # Only inject the documentation, don't create new files
           git-push: false
 
