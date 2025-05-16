@@ -62,9 +62,7 @@ No modules.
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | EC2 instance type | `string` | `"t2.micro"` | no |
 | <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key pair for ec2 access | `string` | `"ansiblekey"` | no |
 | <a name="input_subnet_cidr"></a> [subnet\_cidr](#input\_subnet\_cidr) | CIDR block for the subnet | `string` | `"10.0.1.0/24"` | no |
-| <a name="input_testing22"></a> [testing22](#input\_testing22) | test variable | `string` | n/a | yes |
-| <a name="input_testing4"></a> [testing4](#input\_testing4) | test variable | `string` | n/a | yes |
-| <a name="input_testing5"></a> [testing5](#input\_testing5) | test variable | `string` | n/a | yes |
+| <a name="input_testing23"></a> [testing23](#input\_testing23) | test variable | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | CIDR block for the VPC | `string` | `"10.0.0.0/16"` | no |
 
 ## Outputs
